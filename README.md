@@ -59,3 +59,81 @@
 ### Reference
   - [MicrocontrollersAndMore](https://github.com/MicrocontrollersAndMore/OpenCV_3_License_Plate_Recognition_Python)
   - [tesserocr](https://github.com/sirfz/tesserocr)
+  
+  
+  
+  ### Setup & Run
+  
+  - Preparing the aws server
+	- Select AMI as Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0565af6e282977273
+	- Select Instance Type as m5ad.2xlarge
+	-	Download pem file and change permission with chmod
+chmod 400 deep_learning_test.pem
+	-	Connect via ssh
+ssh -i "deep_learning_test.pem" ec2-user@ec2-54-160-49-218.compute-1.amazonaws.com
+	- Installation
+	- Install necessary packages
+sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev tesseract-ocr-all
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get remove x264 libx264-dev
+
+sudo apt-get install build-essential checkinstall cmake pkg-config yasm
+sudo apt-get install git gfortran
+sudo apt-get install libjpeg8-dev libjasper-dev libpng12-dev
+
+sudo apt-get install libtiff5-dev
+
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev
+sudo apt-get install libxine2-dev libv4l-dev
+sudo apt-get install libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+sudo apt-get install qt5-default libgtk2.0-dev libtbb-dev
+sudo apt-get install libatlas-base-dev
+sudo apt-get install libfaac-dev libmp3lame-dev libtheora-dev
+sudo apt-get install libvorbis-dev libxvidcore-dev
+sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev
+sudo apt-get install x264 v4l-utils
+
+sudo apt-get install libprotobuf-dev protobuf-compiler
+sudo apt-get install libgoogle-glog-dev libgflags-dev
+sudo apt-get install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen
+
+sudo apt-get install python-dev python-pip python3-dev python3-pip
+sudo -H pip2 install -U pip numpy
+sudo -H pip3 install -U pip numpy
+	- Reinstall cmake (Ubuntu 16 already installed cmake, but it doesn’t work well)
+sudo apt-get remove cmake
+sudo apt-get update
+sudo apt-get install cmake
+	- Prepare anaconda for python2.7 (we have to uninstall tiff because the ubuntu 16 only support tiff5.0 but opencv need tiff4.0)
+conda remove libtiff
+conda create --name py2 python=2.7
+source activate py2
+pip install opencv-python
+pip install statistics
+	- Download opencv and build it
+cd ~
+wget -O opencv.zip https://github.com/Itseez/opencv/archive/3.4.0.zip
+unzip opencv.zip
+wget -O opencv_contrib.zip https://github.com/Itseez/opencv_contrib/archive/3.4.0.zip
+unzip opencv_contrib.zip
+cd ~/opencv-3.4.0/
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.4.0/modules \
+    -D PYTHON_EXECUTABLE=/usr/bin/python \
+    -D BUILD_EXAMPLES=ON ..
+		make -j4
+		sudo make install
+		sudo ldconfig
+	-	Clone the source code and build
+git clone git@github.com:claimly/VehicleInsurance.git
+cd VehicleInsurance
+pip install -r requirements
+mkdir uploads # 
+	-	Run
+python webapp.py

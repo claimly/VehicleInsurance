@@ -65,14 +65,16 @@
   ### Setup & Run
   
   - Preparing the aws server
-	- Select AMI as Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0565af6e282977273
-	- Select Instance Type as m5ad.2xlarge
-	-	Download pem file and change permission with chmod
-chmod 400 deep_learning_test.pem
-	-	Connect via ssh
-ssh -i "deep_learning_test.pem" ec2-user@ec2-54-160-49-218.compute-1.amazonaws.com
-	- Installation
-	- Install necessary packages
+  - Select AMI as Ubuntu Server 16.04 LTS (HVM), SSD Volume Type - ami-0565af6e282977273
+  - Select Instance Type as m5ad.2xlarge
+  - Download pem file and change permission with chmod
+  
+   ``` chmod 400 deep_learning_test.pem ```
+   - Connect via ssh
+   ``` ssh -i "deep_learning_test.pem" ec2-user@ec2-54-160-49-218.compute-1.amazonaws.com ```
+   - Installation
+   - Install necessary packages
+```
 sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev tesseract-ocr-all
 sudo apt-get update
 sudo apt-get upgrade
@@ -101,17 +103,23 @@ sudo apt-get install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen
 sudo apt-get install python-dev python-pip python3-dev python3-pip
 sudo -H pip2 install -U pip numpy
 sudo -H pip3 install -U pip numpy
-	- Reinstall cmake (Ubuntu 16 already installed cmake, but it doesn’t work well)
+```
+   - Reinstall cmake (Ubuntu 16 already installed cmake, but it doesn’t work well)
+```
 sudo apt-get remove cmake
 sudo apt-get update
 sudo apt-get install cmake
-	- Prepare anaconda for python2.7 (we have to uninstall tiff because the ubuntu 16 only support tiff5.0 but opencv need tiff4.0)
+```
+   - Prepare anaconda for python2.7 (we have to uninstall tiff because the ubuntu 16 only support tiff5.0 but opencv need tiff4.0)
+```
 conda remove libtiff
 conda create --name py2 python=2.7
 source activate py2
 pip install opencv-python
 pip install statistics
-	- Download opencv and build it
+```
+   - Download opencv and build it
+```
 cd ~
 wget -O opencv.zip https://github.com/Itseez/opencv/archive/3.4.0.zip
 unzip opencv.zip
@@ -135,5 +143,7 @@ git clone git@github.com:claimly/VehicleInsurance.git
 cd VehicleInsurance
 pip install -r requirements
 mkdir uploads # 
-	-	Run
+```
+   - Run
+```
 python webapp.py
